@@ -345,11 +345,14 @@
 				$('#userinfo').window('open');
 				// $.messager.alert('Warning', 'The server needs to initialize the root user.')
 
+				var rootusername   = process.env.ROOTUSERNAME;
+				var rootpassword = process.env.ROOTPASSWORD; 
+
 				$.ajax({
 					type: 'POST',
 					timeout: timeout,
 					url: serverBase + '/connect',
-					data: { 'host': etcdBase, 'uname': colorCodes.username, 'passwd': colorCodes.password },
+					data: { 'host': etcdBase, 'uname': rootusername, 'passwd': rootpassword },
 					async: false,
 					dataType: 'json',
 					success: function (data) {
