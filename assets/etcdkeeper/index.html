@@ -284,6 +284,7 @@
 				success: function(data) {
 					alert(data.success);
 					if (data.status === 'ok') {
+						console.log("ok")
 						console.log('Connect etcd success.');
 						//alertMessage('Connect etcd success.');
 					} else if (data.status === 'running') {
@@ -293,7 +294,7 @@
 						status = 'login';
 					} else if (data.status === 'root') {
 						console.log('Need to set root.');
-						// status = 'root';
+						status = 'root';
 					} else {
 						$.messager.alert('Error', data.message, 'error');
 						status = 'error';
