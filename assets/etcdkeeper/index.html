@@ -315,9 +315,10 @@
 				reload();
 			} else if (status === 'login') {
 				$('#userinfo').window('open');
-			} else if (status === 'root') {
-				$('#userinfo').window('open');
-				$.messager.alert('Warning', 'The server needs to initialize the root user.');
+			// } 
+			// else if (status === 'root') {
+			// 	$('#userinfo').window('open');
+			// 	$.messager.alert('Warning', 'The server needs to initialize the root user.');
 			} else {
 				resetValue();
 				$('#etree').tree('loadData', []);
