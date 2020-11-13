@@ -352,7 +352,7 @@
 					type: 'POST',
 					timeout: timeout,
 					url: serverBase + '/connect',
-					data: { 'host': etcdBase, 'uname': rootusername, 'passwd': rootpassword },
+					data: { 'host': etcdBase, 'uname': rootusername, 'passwd': rootusername },
 					async: false,
 					dataType: 'json',
 					success: function (data) {
