@@ -25,3 +25,14 @@
 #    - 12000:8080
 #    depends_on:
 #    - etcd
+
+version: "3.2"
+
+services:
+
+  etcd-keeper:
+    build: .
+    volumes:
+      - /root/etcdkeeper:/opt/etcdkeeper
+    ports:
+      - 8080:8080
