@@ -317,13 +317,19 @@
 
 			if (status === 'ok') {
 				reload();
+				console.log("ok")
 			} else if (status === 'login') {
 				$('#userinfo').window('open');
-			// } 
-			// else if (status === 'root') {
-			// 	$('#userinfo').window('open');
+				console.log("login")
+			} 
+			else if (status === 'root') {
+				console.log("root")
+				resetValue();
+				// $('#userinfo').window('open');
+				$('#etree').tree('loadData', []);
 				// $.messager.alert('Warning', 'The server needs to initialize the root user.');
 			} else {
+				console.log("else")
 				resetValue();
 				$('#etree').tree('loadData', []);
 			}
