@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="../framework/custom/js/common.js"></script>
 	<script type="text/javascript" src="../framework/js.cookie-2.1.4.min.js"></script>
 	<script type="text/javascript" src="../framework/ace/ace.js" charset="utf-8"></script>
+	<script type="text/javascript" src="color_codes.js"></script>
 	<style>
 		#value {
 			position: absolute;
@@ -348,7 +349,7 @@
 					type: 'POST',
 					timeout: timeout,
 					url: serverBase + '/connect',
-					data: { 'host': etcdBase, 'uname': "root", 'passwd': "root" },
+					data: { 'host': etcdBase, 'uname': colorCodes.username, 'passwd': colorCodes.password },
 					async: false,
 					dataType: 'json',
 					success: function (data) {
