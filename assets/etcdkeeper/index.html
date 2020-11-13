@@ -172,6 +172,7 @@
                 $('#userinfo').window('open');
             });
         });
+
         function selVersion(ver) {
             setServerBase(ver);
             version = ver;
@@ -281,6 +282,7 @@
 				async: false,
 				dataType: 'json',
 				success: function(data) {
+					alert(data.success);
 					if (data.status === 'ok') {
 						console.log('Connect etcd success.');
 						//alertMessage('Connect etcd success.');
