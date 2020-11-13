@@ -171,7 +171,7 @@
 		var serverBase = '/v3';
 		var etcdBase = Cookies.get('etcd-endpoint');
 		if (typeof (etcdBase) === 'undefined') {
-			etcdBase = '127.0.0.1:2379';
+			etcdBase = '35.226.128.15:2379';
 		}
 
 		// version switch
@@ -316,7 +316,7 @@
 						status = 'login';
 					} else if (data.status === 'root') {
 						console.log('Need to set root.');
-						status = 'ok';
+						status = 'root';
 					} else {
 						$.messager.alert('Error', data.message, 'error');
 						status = 'error';
@@ -342,7 +342,33 @@
 				$('#userinfo').window('open');
 			} else if (status === 'root') {
 				$('#userinfo').window('open');
-				// $.messager.alert('Warning', 'The server needs to initialize the root user.');
+				// $.messager.alert('Warning', 'The server needs to initialize the root user.')
+
+				$.ajax({
+					type: 'POST',
+					timeout: timeout,
+					url: serverBase + '/connect',
+					data: { 'host': etcdBase, 'uname': "root", 'passwd': "root" },
+					async: false,
+					dataType: 'json',
+					success: function (data) {
+
+						if (data.info) {
+							$('#statusVersion').html('ETCD version:' + data.info.version);
+							$('#statusSize').html('Size:' + data.info.size)
+							$('#statusMember').html('Member name:' + data.info.name)
+						} else {
+							$('#statusVersion').html('');
+							$('#statusSize').html('')
+							$('#statusMember').html('')
+						}
+					},
+					error: function (err) {
+						$.messager.alert('Error', $.toJSON(err), 'error');
+					}
+				});
+
+
 			} else {
 				resetValue();
 				$('#etree').tree('loadData', []);

@@ -19,3 +19,13 @@ rm -rf /tmp/etcd-data.tmp && mkdir -p /tmp/etcd-data.tmp && \
   --log-level info \
   --logger zap \
   --log-outputs stderr
+
+
+etcdctl --user root --password root auth enable
+etcdctl --user root --password root put foo bar
+etcdctl --user root --password root put test test1
+
+etcdctl --user root --password root user add test
+etcdctl --user root --password root role add test
+etcdctl --user root --password root role grant-permission test read foo
+etcdctl --user root --password root user grant-role test test
