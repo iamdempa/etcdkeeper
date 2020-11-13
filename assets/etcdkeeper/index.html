@@ -310,7 +310,9 @@
 					$.messager.alert('Error', $.toJSON(err), 'error');
 				}
 			});
-			
+
+			alert(status)
+
 			if (status === 'ok') {
 				reload();
 			} else if (status === 'login') {
