@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="../framework/custom/js/common.js"></script>
 	<script type="text/javascript" src="../framework/js.cookie-2.1.4.min.js"></script>
 	<script type="text/javascript" src="../framework/ace/ace.js" charset="utf-8"></script>
-	<script type="text/javascript" src="color_codes.js"></script>
+
 	<style>
 		#value {
 			position: absolute;
@@ -158,6 +158,7 @@
 	</div>
 
 	<script>
+		console.log(process.env.ROOTUSERNAME); 
 		resizeWindow();
 		$(window).resize(function () { // FIXME: invalid
 			resizeWindow();
@@ -253,6 +254,7 @@
 			success: function (data) {
 				separator = data;
 				console.log(data);
+				
 			},
 			error: function (err) {
 				$.messager.alert('Error', $.toJSON(err), 'error');

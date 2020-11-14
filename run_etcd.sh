@@ -1,6 +1,6 @@
 rm -rf /tmp/etcd-data.tmp && mkdir -p /tmp/etcd-data.tmp && \
   docker rmi gcr.io/etcd-development/etcd:v3.4.13 || true && \
-  docker run \
+  docker run -d \
   -p 2379:2379 \
   -p 2380:2380 \
   --mount type=bind,source=/tmp/etcd-data.tmp,destination=/etcd-data \
@@ -20,7 +20,7 @@ rm -rf /tmp/etcd-data.tmp && mkdir -p /tmp/etcd-data.tmp && \
   --logger zap \
   --log-outputs stderr
 
-
+etcdctl user add root
 etcdctl --user root --password root auth enable
 etcdctl --user root --password root put foo bar
 etcdctl --user root --password root put test test1
