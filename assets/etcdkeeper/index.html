@@ -393,7 +393,15 @@
 					async: false,
 					dataType: 'json',
 					success: function (data) {
-						blue = ""
+						if (data.info) {
+							$('#statusVersion').html('ETCD version:' + data.info.version);
+							$('#statusSize').html('Size:' + data.info.size)
+							$('#statusMember').html('Member name:' + data.info.name)
+						} else {
+							$('#statusVersion').html('');
+							$('#statusSize').html('')
+							$('#statusMember').html('')
+						}
 					},
 					error: function (err) {
 						$.messager.alert('Error', $.toJSON(err), 'error');
