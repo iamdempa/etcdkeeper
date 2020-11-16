@@ -19071,6 +19071,6 @@ exports.version = "1.2.6";
 var colorCodes = {
 
   blue  : "root",
-  red : "etcd@stag@pm",
+  red : "root",
 
 };        

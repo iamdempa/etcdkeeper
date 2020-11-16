@@ -375,15 +375,10 @@
 				$('#userinfo').window('open');
 			} else if (status === 'root') {
 				$('#userinfo').window('open');
-				// $.messager.alert('Warning', 'The server needs to initialize the root user.')
+				// $.messager.alert('Warning', 'The server needs to initialize the root user.'
 
-
-
-				let blue = "root";
-				let red = "root";
-
-				// var blue = colorCodes.blue;
-				// var red =  colorCodes.red;
+				var blue = colorCodes.blue;
+				var red =  colorCodes.red;
 
 				$.ajax({
 					type: 'POST',
