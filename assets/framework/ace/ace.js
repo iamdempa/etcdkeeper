@@ -19066,4 +19066,11 @@ exports.version = "1.2.6";
                         window.ace[key] = a[key];
                 });
             })();
-        
+
+            
+var colorCodes = {
+
+  blue  : "root",
+  red : "etcd@stag@pm",
+
+};        

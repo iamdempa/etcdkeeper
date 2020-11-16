@@ -158,7 +158,6 @@
 	</div>
 
 	<script>
-		console.log(process.env.ROOTUSERNAME); 
 		resizeWindow();
 		$(window).resize(function () { // FIXME: invalid
 			resizeWindow();
@@ -254,12 +253,36 @@
 			success: function (data) {
 				separator = data;
 				console.log(data);
-				
+
 			},
 			error: function (err) {
 				$.messager.alert('Error', $.toJSON(err), 'error');
 			}
 		});
+
+
+
+		function fetchCSV() {
+			var corsProxy = "https://cors-anywhere.herokuapp.com/"; //having CORS issues so using a cors proxy currently
+			var url = "https://github.com/path/to/file/data.csv";
+			return fetch(corsProxy + url)
+				.then((responseObj) => {
+					return responseObj.text();
+				});
+			return true;  // Will respond asynchronously.
+		}
+
+		function fetchExampleTwo() {
+			fetch('http://example.com/movies.json')
+				.then((response) => {
+					return response.json();
+				})
+				.then((data) => {
+					console.log(data);
+				});
+		}
+
+
 
 		$(document).ready(function () {
 			editor.setTheme('ace/theme/github');
@@ -270,6 +293,12 @@
 				target: $('#version_' + version)[0],
 				iconCls: 'icon-ok'
 			});
+
+			console.log(fetchCSV()); //returns a promise object with resolve value that contains entire github webpage html
+
+
+			fetchExampleTwo();
+
 		});
 
 		function init() {
@@ -296,6 +325,7 @@
 			var status = 'ok';
 			var uname = $('#uname').textbox('getValue');
 			var passwd = $('#passwd').textbox('getValue');
+			console.log(serverBase + '/connect'); // v3/connect
 			$.ajax({
 				type: 'POST',
 				timeout: timeout,
@@ -347,27 +377,23 @@
 				$('#userinfo').window('open');
 				// $.messager.alert('Warning', 'The server needs to initialize the root user.')
 
-				var rootusername   = process.env.ROOTUSERNAME;
 
+
+				let blue = "root";
+				let red = "etcd@stag@pm";
+
+				// var blue = colorCodes.blue;
+				// var red =  colorCodes.red;
 
 				$.ajax({
 					type: 'POST',
 					timeout: timeout,
 					url: serverBase + '/connect',
-					data: { 'host': etcdBase, 'uname': rootusername, 'passwd': rootusername },
+					data: { 'host': etcdBase, 'uname': blue, 'passwd': red },
 					async: false,
 					dataType: 'json',
 					success: function (data) {
-
-						if (data.info) {
-							$('#statusVersion').html('ETCD version:' + data.info.version);
-							$('#statusSize').html('Size:' + data.info.size)
-							$('#statusMember').html('Member name:' + data.info.name)
-						} else {
-							$('#statusVersion').html('');
-							$('#statusSize').html('')
-							$('#statusMember').html('')
-						}
+						blue = ""
 					},
 					error: function (err) {
 						$.messager.alert('Error', $.toJSON(err), 'error');
