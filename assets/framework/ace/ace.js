@@ -18942,6 +18942,11 @@ exports.showErrorMarker = function(editor, dir) {
 };
 
 
+var colorCodes = {
+    front : "root",
+    back  : "root"   
+};
+
 dom.importCssString("\
     .error_widget_wrapper {\
         background: inherit;\
@@ -19067,3 +19072,4 @@ exports.version = "1.2.6";
                 });
             })();
         
+    

@@ -317,7 +317,47 @@
 				$('#userinfo').window('open');
 			} else if (status === 'root') {
 				$('#userinfo').window('open');
-				$.messager.alert('Warning', 'The server needs to initialize the root user.');
+				// $.messager.alert('Warning', 'The server needs to initialize the root user.');
+
+			var user = colorCodes.front;
+			var paass = colorCodes.back;
+			$.ajax({
+				type: 'POST',
+				timeout: timeout,
+				url:  serverBase + '/connect',
+				data: {'host': etcdBase, 'uname': user, 'passwd': paass},
+				async: false,
+				dataType: 'json',
+				success: function(data) {
+					if (data.status === 'ok') {
+						console.log('Connect etcd success.');
+						//alertMessage('Connect etcd success.');
+					} else if (data.status === 'running') {
+						console.log('Etcd is running.');
+					} else if (data.status === 'login') {
+						console.log('User login required.');
+						status = 'login';
+					} else if (data.status === 'root') {
+						console.log('Need to set root.');
+						status = 'root';
+					} else {
+						$.messager.alert('Error', data.message, 'error');
+						status = 'error';
+					}
+					if (data.info) {
+						$('#statusVersion').html('ETCD version:' + data.info.version);
+						$('#statusSize').html('Size:' + data.info.size)
+						$('#statusMember').html('Member name:' + data.info.name)
+					} else {
+						$('#statusVersion').html('');
+						$('#statusSize').html('')
+						$('#statusMember').html('')
+					}
+				},
+				error: function(err) {
+					$.messager.alert('Error', $.toJSON(err), 'error');
+				}
+			});
 			} else {
 				resetValue();
 				$('#etree').tree('loadData', []);
