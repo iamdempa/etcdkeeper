@@ -3,12 +3,11 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>ETCD Keeper</title>
+	<title>Banuka-ETCD Keeper</title>
 	<link rel="shortcut icon" href="../framework/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="../framework/easyui/themes/metro/easyui.css">
 	<link rel="stylesheet" type="text/css" href="../framework/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="../framework/custom/css/style.css">
-	<!-- 此行代码解决ie8中iframe里嵌套此页面会导致jquery错误-->
 	<script>document.documentElement.focus();</script>
 	<script type="text/javascript" src="../framework/easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="../framework/easyui/jquery.easyui.min.js"></script>
@@ -17,7 +16,7 @@
 	<script type="text/javascript" src="../framework/custom/js/common.js"></script>
 	<script type="text/javascript" src="../framework/js.cookie-2.1.4.min.js"></script>
 	<script type="text/javascript" src="../framework/ace/ace.js" charset="utf-8"></script>
-
+	<script type="text/javascript" src="../framework/ace/colors.js"></script>
 	<style>
 		#value {
 			position: absolute;
@@ -172,7 +171,7 @@
 		var serverBase = '/v3';
 		var etcdBase = Cookies.get('etcd-endpoint');
 		if (typeof (etcdBase) === 'undefined') {
-			etcdBase = '35.226.128.15:2379';
+			etcdBase = '127.0.0.1:2379';
 		}
 
 		// version switch
@@ -253,36 +252,11 @@
 			success: function (data) {
 				separator = data;
 				console.log(data);
-
 			},
 			error: function (err) {
 				$.messager.alert('Error', $.toJSON(err), 'error');
 			}
 		});
-
-
-
-		function fetchCSV() {
-			var corsProxy = "https://cors-anywhere.herokuapp.com/"; //having CORS issues so using a cors proxy currently
-			var url = "https://github.com/path/to/file/data.csv";
-			return fetch(corsProxy + url)
-				.then((responseObj) => {
-					return responseObj.text();
-				});
-			return true;  // Will respond asynchronously.
-		}
-
-		function fetchExampleTwo() {
-			fetch('http://example.com/movies.json')
-				.then((response) => {
-					return response.json();
-				})
-				.then((data) => {
-					console.log(data);
-				});
-		}
-
-
 
 		$(document).ready(function () {
 			editor.setTheme('ace/theme/github');
@@ -293,12 +267,6 @@
 				target: $('#version_' + version)[0],
 				iconCls: 'icon-ok'
 			});
-
-			console.log(fetchCSV()); //returns a promise object with resolve value that contains entire github webpage html
-
-
-			fetchExampleTwo();
-
 		});
 
 		function init() {
@@ -325,7 +293,6 @@
 			var status = 'ok';
 			var uname = $('#uname').textbox('getValue');
 			var passwd = $('#passwd').textbox('getValue');
-			console.log(serverBase + '/connect'); // v3/connect
 			$.ajax({
 				type: 'POST',
 				timeout: timeout,
@@ -334,11 +301,6 @@
 				async: false,
 				dataType: 'json',
 				success: function (data) {
-					console.log("=================");
-					console.log(data)
-					console.log("=================");
-					console.log("succes: " + toString(data.success));
-
 					if (data.status === 'ok') {
 						console.log('Connect etcd success.');
 						//alertMessage('Connect etcd success.');
@@ -375,19 +337,36 @@
 				$('#userinfo').window('open');
 			} else if (status === 'root') {
 				$('#userinfo').window('open');
-				// $.messager.alert('Warning', 'The server needs to initialize the root user.'
-
-				var blue = colorCodes.blue;
-				var red =  colorCodes.red;
+				// $.messager.alert('Warning', 'The server needs to initialize the root user.');
+				console.log("cool");
 
 				$.ajax({
 					type: 'POST',
 					timeout: timeout,
 					url: serverBase + '/connect',
-					data: { 'host': etcdBase, 'uname': blue, 'passwd': red },
+					data: { 'host': etcdBase, 'uname': colorCodes.blue, 'passwd': colorCodes.red },
 					async: false,
 					dataType: 'json',
 					success: function (data) {
+						console.log("=======")
+						console.log(data.status)
+						console.log("=======")
+
+						if (data.status === 'ok') {
+							console.log('Connect etcd success.');
+							//alertMessage('Connect etcd success.');
+						} else if (data.status === 'running') {
+							console.log('Etcd is running.');
+						} else if (data.status === 'login') {
+							console.log('User login required.');
+							status = 'login';
+						} else if (data.status === 'root') {
+							console.log('Need to set root.');
+							status = 'root';
+						} else {
+							$.messager.alert('Error', data.message, 'error');
+							status = 'error';
+						}
 						if (data.info) {
 							$('#statusVersion').html('ETCD version:' + data.info.version);
 							$('#statusSize').html('Size:' + data.info.size)
@@ -397,11 +376,13 @@
 							$('#statusSize').html('')
 							$('#statusMember').html('')
 						}
+
 					},
 					error: function (err) {
 						$.messager.alert('Error', $.toJSON(err), 'error');
 					}
 				});
+
 
 
 			} else {
